@@ -6,7 +6,7 @@
 // @namespace      https://github.com/jonatkins/ingress-intel-total-conversion
 // @updateURL      @@UPDATEURL@@
 // @downloadURL    @@DOWNLOADURL@@
-// @description    [@@BUILDNAME@@-@@BUILDDATE@@] List details of visible.  Based on `iitc-plugin-portals-list@teo96`.
+// @description    [@@BUILDNAME@@-@@BUILDDATE@@] List details of known portals.  Based on `iitc-plugin-portals-list@teo96`.
 // @include        https://www.ingress.com/intel*
 // @include        http://www.ingress.com/intel*
 // @match          https://www.ingress.com/intel*
@@ -29,19 +29,14 @@ window.plugin.portalsdetails = function() {
 window.plugin.portalsdetails.portalsList = [];
 
 window.plugin.portalsdetails.getPortals = function() {
-    //console.log('** getPortals');
-    var retval=false;
+    var foundPortals = false;
 
     var displayBounds = map.getBounds();
 
     window.plugin.portalsdetails.portalsList = [];
     //get portals informations from IITC
     $.each(window.portals, function(i, portal) {
-        // eliminate offscreen portals (selected, and in padding)
-        if(!displayBounds.contains(portal.getLatLng()))
-            return true;
-
-        retval=true;
+        foundPortals = true;
         var d = portal.options.details;
         var name =  d.portalV2.descriptiveText.TITLE;
         var address = d.portalV2.descriptiveText.ADDRESS;
@@ -73,16 +68,16 @@ window.plugin.portalsdetails.getPortals = function() {
         window.plugin.portalsdetails.portalsList.push(thisPortal);
     });
 
-    return retval;
+    return foundPortals;
 }
 
 window.plugin.portalsdetails.displayPL = function() {
     var html = '';
 
     if (window.plugin.portalsdetails.getPortals()) {
-        html += '<h3>Visible portals</h3>';
+        html += '<h3>Known portals</h3>';
         html += window.plugin.portalsdetails.portalsTable();
-        html += '<h3>Links from visible portals</h3>';
+        html += '<h3>Links from known portals</h3>';
         html += window.plugin.portalsdetails.edgesTable();
     } else {
         html = '<table><tr><td>Nothing to show!</td></tr></table>';
@@ -91,7 +86,7 @@ window.plugin.portalsdetails.displayPL = function() {
     dialog({
         html: '<div id="portalsdetails">' + html + '</div>',
         dialogClass: 'ui-dialog-portals-details',
-        title: 'Portal details: ' + window.plugin.portalsdetails.portalsList.length + ' ' + (window.plugin.portalsdetails.portalsList.length == 1 ? 'visible portal' : 'visible portals'),
+        title: 'Portal details: ' + window.plugin.portalsdetails.portalsList.length + ' ' + (window.plugin.portalsdetails.portalsList.length == 1 ? 'known portal' : 'known portals'),
         id: 'portals-details'
     });
 }
@@ -168,7 +163,7 @@ window.plugin.portalsdetails.getPortalLink = function(portal, guid) {
 }
 
 var setup =  function() {
-    $('#toolbox').append(' <a onclick="window.plugin.portalsdetails.displayPL()" title="List details of visible portals.">Portals details</a>');
+    $('#toolbox').append(' <a onclick="window.plugin.portalsdetails.displayPL()" title="List details of known portals.">Portals details</a>');
     $('head').append('<style>' +
                      '.ui-dialog-portals-details {max-width: 1200px !important; width: auto !important;}' +
                      '#dialog-portals-details {max-width: 1200px !important; width: auto !important; }' +
