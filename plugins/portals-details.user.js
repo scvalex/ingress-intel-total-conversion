@@ -74,42 +74,6 @@ window.plugin.portalsdetails.getPortals = function() {
         // Sort resonators array by resonator level
         resonators.sort(function (a, b) {return b[0] - a[0]});
 
-        //get mods informations
-        var mods = [];
-        $.each(d.portalV2.linkedModArray, function(ind, mod) {
-            var modShortName='';
-            if (mod) {
-                switch (mod.displayName) {
-                case 'Portal Shield':
-                    modShortName = 'S';
-                    break;
-                case 'Force Amp':
-                    modShortName = 'FA';
-                    break;
-                case 'Link Amp':
-                    modShortName = 'LA';
-                    break;
-                case 'Heat Sink':
-                    modShortName = 'H';
-                    break;
-                case 'Multi-hack':
-                    modShortName = 'M';
-                    break;
-                case 'Turret':
-                    modShortName = 'T';
-                    break;
-                default:
-                    modShortName = '';
-                    break;
-                }
-                if (modShortName === '') {
-                    mods[ind] = ['', '', ''];
-                } else {
-                    mods[ind] = [mod.rarity, getPlayerName(mod.installingUser), modShortName, mod.displayName];
-                }
-            }else { mods[ind] = ['', '', '']; }
-        });
-        console.log(mods);
         var APgain= getAttackApGain(d).enemyAp;
         var thisPortal = { 'portal': d,
                            'name': name,
@@ -118,7 +82,6 @@ window.plugin.portalsdetails.getPortals = function() {
                            'guid': guid,
                            'resonators': resonators,
                            'energyratio': maxenergy ? Math.floor(energy/maxenergy*100) : 0,
-                           'mods': mods,
                            'APgain': APgain,
                            'EAP': (energy/APgain).toFixed(2),
                            'energy': energy,
