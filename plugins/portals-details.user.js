@@ -164,8 +164,6 @@ window.plugin.portalsdetails.portalTable = function() {
         + '<th>Coordinates</th>'
         + '<th>Level</th>'
         + '<th>Team</th>'
-        + '<th>Energy</th>'
-        + '<th>%</th>'
         + '<th>Links</th>'
         + '<th>M1</th>'
         + '<th>M2</th>'
@@ -186,9 +184,7 @@ window.plugin.portalsdetails.portalTable = function() {
             + '<td class="L' + Math.floor(portal.level) +'">' + portal.level + '</td>'
             + '<td style="text-align:center;">' + portal.team + '</td>';
 
-        html += '<td style="cursor:help" title="'+ portal.energy +'">' + prettyEnergy(portal.energy) + '</td>'
-            + '<td style="cursor:help" title="' + portal.energy + ' / ' + portal.maxenergy +'">' + portal.energyratio + '%</td>'
-            + '<td style="cursor:help" title="' + portal.links + '">' + portal.links + '</td>'
+        html += '<td style="cursor:help" title="' + portal.links + '">' + portal.links + '</td>'
             + '<td style="cursor:help; background-color: '+COLORS_MOD[portal.mods[0][0]]+';" title="Mod : ' + portal.mods[0][3] + '\nInstalled by : ' + portal.mods[0][1] + '\nRarity : ' + portal.mods[0][0] + '">' + portal.mods[0][2] + '</td>'
             + '<td style="cursor:help; background-color: '+COLORS_MOD[portal.mods[1][0]]+';" title="Mod : ' + portal.mods[1][3] + '\nInstalled by : ' + portal.mods[1][1] + '\nRarity : ' + portal.mods[1][0] + '">' + portal.mods[1][2] + '</td>'
             + '<td style="cursor:help; background-color: '+COLORS_MOD[portal.mods[2][0]]+';" title="Mod : ' + portal.mods[2][3] + '\nInstalled by : ' + portal.mods[2][1] + '\nRarity : ' + portal.mods[2][0] + '">' + portal.mods[2][2] + '</td>'
