@@ -52,6 +52,7 @@ window.plugin.portalsdetails.getPortals = function() {
         var coords = { lat: portal.options.details.locationE6.latE6,
                        lng: portal.options.details.locationE6.lngE6
                      };
+        var numLinks = d.portalV2.linkedEdges.length;
 
         //get resonators informations
         var resonators = []; // my local resonator array : reso level, reso deployed by, distance to portal, energy total, max
@@ -116,7 +117,7 @@ window.plugin.portalsdetails.getPortals = function() {
                            'EAP': (energy/APgain).toFixed(2),
                            'energy': energy,
                            'maxenergy': maxenergy,
-                           'links': d.portalV2.linkedEdges.length,
+                           'numLinks': numLinks,
                            'lat': portal._latlng.lat,
                            'lng': portal._latlng.lng,
                            'address': address,
@@ -176,7 +177,7 @@ window.plugin.portalsdetails.portalTable = function() {
             + '<td class="L' + Math.floor(portal.level) +'">' + portal.level + '</td>'
             + '<td style="text-align:center;">' + portal.team + '</td>';
 
-        html += '<td style="cursor:help" title="' + portal.links + '">' + portal.links + '</td>';
+        html += '<td style="cursor:help">' + portal.numLinks + '</td>';
         html+= '</tr>';
     });
     html += '</table>';
