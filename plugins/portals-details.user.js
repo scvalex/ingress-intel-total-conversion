@@ -186,8 +186,8 @@ window.plugin.portalsdetails.displayPL = function() {
 
 window.plugin.portalsdetails.portalTable = function(sortBy, sortOrder, filter) {
     // sortOrder <0 ==> desc, >0 ==> asc, i use sortOrder * -1 to change the state
-    window.plugin.portalsdetails.filter=filter;
-    var portals=window.plugin.portalsdetails.listPortals;
+    window.plugin.portalsdetails.filter = filter;
+    var portals = window.plugin.portalsdetails.listPortals;
 
     //Array sort
     window.plugin.portalsdetails.listPortals.sort(function(a, b) {
@@ -248,7 +248,7 @@ window.plugin.portalsdetails.portalTable = function(sortBy, sortOrder, filter) {
     });
 
     var sort = window.plugin.portalsdetails.portalTableSort;
-    var html = window.plugin.portalsdetails.stats();
+    var html = "";
     html += '<table>'
         + '<tr><th ' + sort('guid', sortBy, -1) + '>GUID</th>'
         + '<th ' + sort('names', sortBy, -1) + '>Portal</th>'
@@ -314,17 +314,6 @@ window.plugin.portalsdetails.portalTable = function(sortBy, sortOrder, filter) {
     html += '</table>';
 
     window.plugin.portalsdetails.sortOrder = window.plugin.portalsdetails.sortOrder*-1;
-    return html;
-}
-
-window.plugin.portalsdetails.stats = function(sortBy) {
-    //console.log('** stats');
-    var html = '<table><tr>'
-        + '<td class="filterAll" style="cursor:pointer"  onclick="window.plugin.portalsdetails.portalTable(\'level\',-1,0)"><a href=""></a>All Portals : (click to filter)</td><td class="filterAll">' + window.plugin.portalsdetails.listPortals.length + '</td>'
-        + '<td class="filterRes" style="cursor:pointer" class="sorted" onclick="window.plugin.portalsdetails.portalTable(\'level\',-1,1)">Resistance Portals : </td><td class="filterRes">' + window.plugin.portalsdetails.resP +' (' + Math.floor(window.plugin.portalsdetails.resP/window.plugin.portalsdetails.listPortals.length*100) + '%)</td>'
-        + '<td class="filterEnl" style="cursor:pointer" class="sorted" onclick="window.plugin.portalsdetails.portalTable(\'level\',-1,2)">Enlightened Portals : </td><td class="filterEnl">'+ window.plugin.portalsdetails.enlP +' (' + Math.floor(window.plugin.portalsdetails.enlP/window.plugin.portalsdetails.listPortals.length*100) + '%)</td>'
-        + '</tr>'
-        + '</table>';
     return html;
 }
 
