@@ -340,7 +340,7 @@ window.plugin.portalsdetails.getPortalLink = function(portal,guid) {
 }
 
 var setup =  function() {
-  $('#toolbox').append(' <a onclick="window.plugin.portalsdetails.displayPL()" title="Display a list of portals in the current view">Portals list</a>');
+  $('#toolbox').append(' <a onclick="window.plugin.portalsdetails.displayPL()" title="Show details for visible portals.">Portals details</a>');
   $('head').append('<style>' +
     '.ui-dialog-portalslist {max-width: 800px !important; width: auto !important;}' +
     '#portalslist table {margin-top:5px; border-collapse: collapse; empty-cells: show; width:100%; clear: both;}' +
