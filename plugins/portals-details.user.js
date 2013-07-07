@@ -62,7 +62,9 @@ window.plugin.portalsdetails.getPortals = function() {
         }
         var level = getPortalLevel(d).toFixed(2);
         var guid = portal.options.guid;
-
+        var coords = { lat: portal.options.details.locationE6.latE6,
+                       lng: portal.options.details.locationE6.lngE6
+                     };
 
         //get resonators informations
         var resonators = []; // my local resonator array : reso level, reso deployed by, distance to portal, energy total, max
@@ -131,7 +133,9 @@ window.plugin.portalsdetails.getPortals = function() {
                            'lat': portal._latlng.lat,
                            'lng': portal._latlng.lng,
                            'address': address,
-                           'img': img};
+                           'img': img,
+                           'coords': coords
+                         };
         window.plugin.portalsdetails.listPortals.push(thisPortal);
     });
 
@@ -155,24 +159,24 @@ window.plugin.portalsdetails.displayPL = function() {
     };
 
     dialog({
-        html: '<div id="portalslist">' + html + '</div>',
-        dialogClass: 'ui-dialog-portalslist',
-        title: 'Portal list: ' + window.plugin.portalsdetails.listPortals.length + ' ' + (window.plugin.portalsdetails.listPortals.length == 1 ? 'portal' : 'portals'),
-        id: 'portal-list'
+        html: '<div id="portalsdetails">' + html + '</div>',
+        dialogClass: 'ui-dialog-portals-details',
+        title: 'Portal details: ' + window.plugin.portalsdetails.listPortals.length + ' ' + (window.plugin.portalsdetails.listPortals.length == 1 ? 'visible portal' : 'visible portals'),
+        id: 'portals-details'
     });
 
     // Setup sorting
-    $(document).on('click.portalsdetails', '#portalslist table th', function() {
-        $('#portalslist').html(window.plugin.portalsdetails.portalTable($(this).data('sort'),window.plugin.portalsdetails.sortOrder,window.plugin.portalsdetails.filter));
+    $(document).on('click.portalsdetails', '#portalsdetails table th', function() {
+        $('#portalsdetails').html(window.plugin.portalsdetails.portalTable($(this).data('sort'),window.plugin.portalsdetails.sortOrder,window.plugin.portalsdetails.filter));
     });
-    $(document).on('click.portalsdetails', '#portalslist .filterAll', function() {
-        $('#portalslist').html(window.plugin.portalsdetails.portalTable($(this).data('sort'),window.plugin.portalsdetails.sortOrder,0));
+    $(document).on('click.portalsdetails', '#portalsdetails .filterAll', function() {
+        $('#portalsdetails').html(window.plugin.portalsdetails.portalTable($(this).data('sort'),window.plugin.portalsdetails.sortOrder,0));
     });
-    $(document).on('click.portalsdetails', '#portalslist .filterRes', function() {
-        $('#portalslist').html(window.plugin.portalsdetails.portalTable($(this).data('sort'),window.plugin.portalsdetails.sortOrder,1));
+    $(document).on('click.portalsdetails', '#portalsdetails .filterRes', function() {
+        $('#portalsdetails').html(window.plugin.portalsdetails.portalTable($(this).data('sort'),window.plugin.portalsdetails.sortOrder,1));
     });
-    $(document).on('click.portalsdetails', '#portalslist .filterEnl', function() {
-        $('#portalslist').html(window.plugin.portalsdetails.portalTable($(this).data('sort'),window.plugin.portalsdetails.sortOrder,2));
+    $(document).on('click.portalsdetails', '#portalsdetails .filterEnl', function() {
+        $('#portalsdetails').html(window.plugin.portalsdetails.portalTable($(this).data('sort'),window.plugin.portalsdetails.sortOrder,2));
     });
 
     //debug tools
@@ -246,7 +250,9 @@ window.plugin.portalsdetails.portalTable = function(sortBy, sortOrder, filter) {
     var sort = window.plugin.portalsdetails.portalTableSort;
     var html = window.plugin.portalsdetails.stats();
     html += '<table>'
-        + '<tr><th ' + sort('names', sortBy, -1) + '>Portal</th>'
+        + '<tr><th ' + sort('guid', sortBy, -1) + '>GUID</th>'
+        + '<th ' + sort('names', sortBy, -1) + '>Portal</th>'
+        + '<th ' + sort('coords', sortBy, -1) + '>Coordinates</th>'
         + '<th ' + sort('level', sortBy, -1) + '>Level</th>'
         + '<th title="Team" ' + sort('team', sortBy, -1) + '>T</th>'
         + '<th ' + sort('r1', sortBy, -1) + '>R1</th>'
@@ -267,12 +273,16 @@ window.plugin.portalsdetails.portalTable = function(sortBy, sortOrder, filter) {
         + '<th ' + sort('APgain', sortBy, -1) + '>AP Gain</th>'
         + '<th title="Energy / AP Gain ratio" ' + sort('EAP', sortBy, -1) + '>E/AP</th></tr>';
 
+    var prettyPrintCoords = function(coords) {
+        return "" + (coords.lat / 1e6) + " " + (coords.lng / 1e6);
+    }
 
     $.each(portals, function(ind, portal) {
-
         if (filter === 0 || filter === portal.team) {
             html += '<tr class="' + (portal.team === 1 ? 'res' : (portal.team === 2 ? 'enl' : 'neutral')) + '">'
-                + '<td style="">' + window.plugin.portalsdetails.getPortalLink(portal.portal, portal.guid) + '</td>'
+                + '<td>' + portal.guid + '</td>'
+                + '<td>' + window.plugin.portalsdetails.getPortalLink(portal.portal, portal.guid) + '</td>'
+                + '<td>' + prettyPrintCoords(portal.coords) + '</td>'
                 + '<td class="L' + Math.floor(portal.level) +'">' + portal.level + '</td>'
                 + '<td style="text-align:center;">' + portal.team + '</td>';
 
@@ -354,31 +364,30 @@ window.plugin.portalsdetails.getPortalLink = function(portal,guid) {
 var setup =  function() {
     $('#toolbox').append(' <a onclick="window.plugin.portalsdetails.displayPL()" title="Show details for visible portals.">Portals details</a>');
     $('head').append('<style>' +
-                     '.ui-dialog-portalslist {max-width: 800px !important; width: auto !important;}' +
-                     '#portalslist table {margin-top:5px; border-collapse: collapse; empty-cells: show; width:100%; clear: both;}' +
-                     '#portalslist table td, #portalslist table th {border-bottom: 1px solid #0b314e; padding:3px; color:white; background-color:#1b415e}' +
-                     '#portalslist table tr.res td {  background-color: #005684; }' +
-                     '#portalslist table tr.enl td {  background-color: #017f01; }' +
-                     '#portalslist table tr.neutral td {  background-color: #000000; }' +
-                     '#portalslist table th { text-align:center;}' +
-                     '#portalslist table td { text-align: center;}' +
-                     '#portalslist table td.L0 { cursor: help; background-color: #000000 !important;}' +
-                     '#portalslist table td.L1 { cursor: help; background-color: #FECE5A !important;}' +
-                     '#portalslist table td.L2 { cursor: help; background-color: #FFA630 !important;}' +
-                     '#portalslist table td.L3 { cursor: help; background-color: #FF7315 !important;}' +
-                     '#portalslist table td.L4 { cursor: help; background-color: #E40000 !important;}' +
-                     '#portalslist table td.L5 { cursor: help; background-color: #FD2992 !important;}' +
-                     '#portalslist table td.L6 { cursor: help; background-color: #EB26CD !important;}' +
-                     '#portalslist table td.L7 { cursor: help; background-color: #C124E0 !important;}' +
-                     '#portalslist table td.L8 { cursor: help; background-color: #9627F4 !important;}' +
-                     '#portalslist table td:nth-child(1) { text-align: left;}' +
-                     '#portalslist table th { cursor:pointer; text-align: right;}' +
-                     '#portalslist table th:nth-child(1) { text-align: left;}' +
-                     '#portalslist table th.sorted { color:#FFCE00; }' +
-                     '#portalslist .filterAll { margin-top:10px;}' +
-                     '#portalslist .filterRes { margin-top:10px; background-color: #005684  }' +
-                     '#portalslist .filterEnl { margin-top:10px; background-color: #017f01  }' +
-                     '#portalslist .disclaimer { margin-top:10px; font-size:10px; }' +
+                     '.ui-dialog-portals-details {max-width: 1000px !important; width: auto !important;}' +
+                     '#dialog-portals-details {max-width: 1000px !important; width: auto !important; }' +
+                     '#portalsdetails table {margin-top:5px; border-collapse: collapse; empty-cells: show; width:100%; clear: both;}' +
+                     '#portalsdetails table td, #portalsdetails table th {border-bottom: 1px solid #0b314e; padding:3px; color:white; background-color:#1b415e}' +
+                     '#portalsdetails table tr.res td {  background-color: #005684; }' +
+                     '#portalsdetails table tr.enl td {  background-color: #017f01; }' +
+                     '#portalsdetails table tr.neutral td {  background-color: #000000; }' +
+                     '#portalsdetails table th { text-align:center;}' +
+                     '#portalsdetails table td { text-align: center;}' +
+                     '#portalsdetails table td.L0 { cursor: help; background-color: #000000 !important;}' +
+                     '#portalsdetails table td.L1 { cursor: help; background-color: #FECE5A !important;}' +
+                     '#portalsdetails table td.L2 { cursor: help; background-color: #FFA630 !important;}' +
+                     '#portalsdetails table td.L3 { cursor: help; background-color: #FF7315 !important;}' +
+                     '#portalsdetails table td.L4 { cursor: help; background-color: #E40000 !important;}' +
+                     '#portalsdetails table td.L5 { cursor: help; background-color: #FD2992 !important;}' +
+                     '#portalsdetails table td.L6 { cursor: help; background-color: #EB26CD !important;}' +
+                     '#portalsdetails table td.L7 { cursor: help; background-color: #C124E0 !important;}' +
+                     '#portalsdetails table td.L8 { cursor: help; background-color: #9627F4 !important;}' +
+                     '#portalsdetails table td:nth-child(1) { text-align: left;}' +
+                     '#portalsdetails table th.sorted { color:#FFCE00; }' +
+                     '#portalsdetails .filterAll { margin-top:10px;}' +
+                     '#portalsdetails .filterRes { margin-top:10px; background-color: #005684  }' +
+                     '#portalsdetails .filterEnl { margin-top:10px; background-color: #017f01  }' +
+                     '#portalsdetails .disclaimer { margin-top:10px; font-size:10px; }' +
                      '</style>');
 }
 
