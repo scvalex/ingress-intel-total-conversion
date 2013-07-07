@@ -31,8 +31,6 @@ window.plugin.portalsdetails.portalsList = [];
 window.plugin.portalsdetails.getPortals = function() {
     var foundPortals = false;
 
-    var displayBounds = map.getBounds();
-
     window.plugin.portalsdetails.portalsList = [];
     //get portals informations from IITC
     $.each(window.portals, function(i, portal) {
