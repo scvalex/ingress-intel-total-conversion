@@ -364,8 +364,8 @@ window.plugin.portalsdetails.getPortalLink = function(portal,guid) {
 var setup =  function() {
     $('#toolbox').append(' <a onclick="window.plugin.portalsdetails.displayPL()" title="Show details for visible portals.">Portals details</a>');
     $('head').append('<style>' +
-                     '.ui-dialog-portals-details {max-width: 1000px !important; width: auto !important;}' +
-                     '#dialog-portals-details {max-width: 1000px !important; width: auto !important; }' +
+                     '.ui-dialog-portals-details {max-width: 1200px !important; width: auto !important;}' +
+                     '#dialog-portals-details {max-width: 1200px !important; width: auto !important; }' +
                      '#portalsdetails table {margin-top:5px; border-collapse: collapse; empty-cells: show; width:100%; clear: both;}' +
                      '#portalsdetails table td, #portalsdetails table th {border-bottom: 1px solid #0b314e; padding:3px; color:white; background-color:#1b415e}' +
                      '#portalsdetails table tr.res td {  background-color: #005684; }' +
