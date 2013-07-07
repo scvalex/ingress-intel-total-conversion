@@ -115,7 +115,23 @@ window.plugin.portalsdetails.getPortals = function() {
         });
         console.log(mods);
         var APgain= getAttackApGain(d).enemyAp;
-        var thisPortal = {'portal': d, 'name': name, 'team': team, 'level': level, 'guid': guid, 'resonators': resonators, 'energyratio': maxenergy ? Math.floor(energy/maxenergy*100) : 0, 'mods': mods, 'APgain': APgain, 'EAP': (energy/APgain).toFixed(2), 'energy': energy, 'maxenergy': maxenergy, 'links': d.portalV2.linkedEdges.length, 'lat': portal._latlng.lat, 'lng': portal._latlng.lng, 'address': address, 'img': img};
+        var thisPortal = { 'portal': d,
+                           'name': name,
+                           'team': team,
+                           'level': level,
+                           'guid': guid,
+                           'resonators': resonators,
+                           'energyratio': maxenergy ? Math.floor(energy/maxenergy*100) : 0,
+                           'mods': mods,
+                           'APgain': APgain,
+                           'EAP': (energy/APgain).toFixed(2),
+                           'energy': energy,
+                           'maxenergy': maxenergy,
+                           'links': d.portalV2.linkedEdges.length,
+                           'lat': portal._latlng.lat,
+                           'lng': portal._latlng.lng,
+                           'address': address,
+                           'img': img};
         window.plugin.portalsdetails.listPortals.push(thisPortal);
     });
 
