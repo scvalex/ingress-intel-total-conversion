@@ -287,10 +287,6 @@ window.plugin.portalsdetails.portalTable = function(sortBy, sortOrder, filter) {
     });
     html += '</table>';
 
-    html += '<div class="disclaimer">Click on portals table headers to sort by that column. '
-        + 'Click on <b>All Portals, Resistance Portals, Enlightened Portals</b> to filter<br>'
-        + 'Thanks to @vita10gy & @xelio for their IITC plugins who inspired me. A <a href="https://plus.google.com/113965246471577467739">@teo96</a> production. Vive la Résistance !</div>';
-
     window.plugin.portalsdetails.sortOrder = window.plugin.portalsdetails.sortOrder*-1;
     return html;
 }
