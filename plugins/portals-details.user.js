@@ -27,8 +27,6 @@ window.plugin.portalsdetails = function() {
 };
 
 window.plugin.portalsdetails.listPortals = []; // structure : name, team, level, resonators = Array, Shields = Array, APgain
-window.plugin.portalsdetails.enlP = 0;
-window.plugin.portalsdetails.resP = 0;
 
 //fill the listPortals array with portals avalaible on the map (level filtered portals will not appear in the table)
 window.plugin.portalsdetails.getPortals = function() {
@@ -49,14 +47,6 @@ window.plugin.portalsdetails.getPortals = function() {
         var address = d.portalV2.descriptiveText.ADDRESS;
         var img = d.imageByUrl && d.imageByUrl.imageUrl ? d.imageByUrl.imageUrl : DEFAULT_PORTAL_IMG;
         var team = portal.options.team;
-        switch (team){
-        case 1 :
-            window.plugin.portalsdetails.resP++;
-            break;
-        case 2 :
-            window.plugin.portalsdetails.enlP++;
-            break;
-        }
         var level = getPortalLevel(d).toFixed(2);
         var guid = portal.options.guid;
         var coords = { lat: portal.options.details.locationE6.latE6,
@@ -145,8 +135,6 @@ window.plugin.portalsdetails.displayPL = function() {
     //console.log('***** Start ' + start);
 
     var html = '';
-    window.plugin.portalsdetails.enlP = 0;
-    window.plugin.portalsdetails.resP = 0;
 
     if (window.plugin.portalsdetails.getPortals()) {
         html += window.plugin.portalsdetails.portalTable();

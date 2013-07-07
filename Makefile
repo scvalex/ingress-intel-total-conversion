@@ -6,7 +6,7 @@ local:
 	./build.py local
 
 p:
-	permamake.sh plugins/*.j
+	permamake.sh plugins/*.js
 
 clean:
 	rm -rf build/
