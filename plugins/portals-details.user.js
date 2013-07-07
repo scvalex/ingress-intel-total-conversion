@@ -161,20 +161,18 @@ window.plugin.portalsdetails.portalTable = function() {
     html += '<table>'
         + '<tr><th>GUID</th>'
         + '<th>Portal</th>'
-        + '<th>Coordinates</th>'
+        + '<th>Latitude</th>'
+        + '<th>Longitude</th>'
         + '<th>Level</th>'
         + '<th>Team</th>'
         + '<th>Links</th></tr>';
-
-    var prettyPrintCoords = function(coords) {
-        return "" + (coords.lat / 1e6) + " " + (coords.lng / 1e6);
-    }
 
     $.each(portals, function(ind, portal) {
         html += '<tr class="' + (portal.team === 1 ? 'res' : (portal.team === 2 ? 'enl' : 'neutral')) + '">'
             + '<td>' + portal.guid + '</td>'
             + '<td>' + window.plugin.portalsdetails.getPortalLink(portal.portal, portal.guid) + '</td>'
-            + '<td>' + prettyPrintCoords(portal.coords) + '</td>'
+            + '<td>' + (portal.coords.lat / 1e6) + '</td>'
+            + '<td>' + (portal.coords.lng / 1e6) + '</td>'
             + '<td class="L' + Math.floor(portal.level) +'">' + portal.level + '</td>'
             + '<td style="text-align:center;">' + portal.team + '</td>';
 
