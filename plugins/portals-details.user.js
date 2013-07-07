@@ -26,20 +26,20 @@
 window.plugin.portalsdetails = function() {
 };
 
-window.plugin.portalsdetails.listPortals = [];
+window.plugin.portalsdetails.portalsList = [];
 
-//fill the listPortals array with portals avalaible on the map (level filtered portals will not appear in the table)
 window.plugin.portalsdetails.getPortals = function() {
     //console.log('** getPortals');
     var retval=false;
 
     var displayBounds = map.getBounds();
 
-    window.plugin.portalsdetails.listPortals = [];
+    window.plugin.portalsdetails.portalsList = [];
     //get portals informations from IITC
     $.each(window.portals, function(i, portal) {
         // eliminate offscreen portals (selected, and in padding)
-        if(!displayBounds.contains(portal.getLatLng())) return true;
+        if(!displayBounds.contains(portal.getLatLng()))
+            return true;
 
         retval=true;
         var d = portal.options.details;
@@ -70,23 +70,19 @@ window.plugin.portalsdetails.getPortals = function() {
                            'img': img,
                            'coords': coords
                          };
-        window.plugin.portalsdetails.listPortals.push(thisPortal);
+        window.plugin.portalsdetails.portalsList.push(thisPortal);
     });
 
     return retval;
 }
 
 window.plugin.portalsdetails.displayPL = function() {
-    // debug tools
-    //var start = new Date().getTime();
-    //console.log('***** Start ' + start);
-
     var html = '';
 
     if (window.plugin.portalsdetails.getPortals()) {
-        html += '<h3>Portals</h3>';
+        html += '<h3>Visible portals</h3>';
         html += window.plugin.portalsdetails.portalsTable();
-        html += '<h3>Links</h3>';
+        html += '<h3>Links from visible portals</h3>';
         html += window.plugin.portalsdetails.edgesTable();
     } else {
         html = '<table><tr><td>Nothing to show!</td></tr></table>';
@@ -95,21 +91,19 @@ window.plugin.portalsdetails.displayPL = function() {
     dialog({
         html: '<div id="portalsdetails">' + html + '</div>',
         dialogClass: 'ui-dialog-portals-details',
-        title: 'Portal details: ' + window.plugin.portalsdetails.listPortals.length + ' ' + (window.plugin.portalsdetails.listPortals.length == 1 ? 'visible portal' : 'visible portals'),
+        title: 'Portal details: ' + window.plugin.portalsdetails.portalsList.length + ' ' + (window.plugin.portalsdetails.portalsList.length == 1 ? 'visible portal' : 'visible portals'),
         id: 'portals-details'
     });
-
-    //debug tools
-    //end = new Date().getTime();
-    //console.log('***** end : ' + end + ' and Elapse : ' + (end - start));
 }
 
 window.plugin.portalsdetails.edgesTable = function() {
-    var portals = window.plugin.portalsdetails.listPortals;
+    var portals = window.plugin.portalsdetails.portalsList;
 
     var html = "";
-    html += "<table><tbody>";
+    html += "<table><thead>";
+    html += "<tr><th>Source GUID</th><th>Dest GUID</th></tr>";
 
+    html += "</thead><tbody>";
     $.each(portals, function(ind, portal) {
         $.each(portal.edges, function(jnd, edge) {
             html += '<tr class="' + (portal.team === 1 ? 'res' : (portal.team === 2 ? 'enl' : 'neutral')) + '">'
@@ -125,18 +119,19 @@ window.plugin.portalsdetails.edgesTable = function() {
 }
 
 window.plugin.portalsdetails.portalsTable = function() {
-    var portals = window.plugin.portalsdetails.listPortals;
+    var portals = window.plugin.portalsdetails.portalsList;
 
     var html = "";
-    html += '<table>'
+    html += '<table><thead>'
         + '<tr><th>GUID</th>'
         + '<th>Portal</th>'
         + '<th>Latitude</th>'
         + '<th>Longitude</th>'
         + '<th>Level</th>'
         + '<th>Team</th>'
-        + '<th>Links</th></tr>';
+        + '<th>Links</th></tr></thead>';
 
+    html += "<tbody>";
     $.each(portals, function(ind, portal) {
         html += '<tr class="' + (portal.team === 1 ? 'res' : (portal.team === 2 ? 'enl' : 'neutral')) + '">'
             + '<td>' + portal.guid + '</td>'
@@ -149,23 +144,17 @@ window.plugin.portalsdetails.portalsTable = function() {
         html += '<td style="cursor:help">' + portal.edges.length + '</td>';
         html+= '</tr>';
     });
-    html += '</table>';
+    html += '</tbody></table>';
 
     return html;
 }
 
-// portal link - single click: select portal
-//               double click: zoom to and select portal
-//               hover: show address
-// code from getPortalLink function by xelio from iitc: AP List - https://raw.github.com/breunigs/ingress-intel-total-conversion/gh-pages/plugins/ap-list.user.js
-window.plugin.portalsdetails.getPortalLink = function(portal,guid) {
-
+window.plugin.portalsdetails.getPortalLink = function(portal, guid) {
     var latlng = [portal.locationE6.latE6/1E6, portal.locationE6.lngE6/1E6].join();
     var jsSingleClick = 'window.renderPortalDetails(\''+guid+'\');return false';
     var jsDoubleClick = 'window.zoomToAndShowPortal(\''+guid+'\', ['+latlng+']);return false';
     var perma = '/intel?latE6='+portal.locationE6.latE6+'&lngE6='+portal.locationE6.lngE6+'&z=17&pguid='+guid;
 
-    //Use Jquery to create the link, which escape characters in TITLE and ADDRESS of portal
     var a = $('<a>',{
         "class": 'help',
         text: portal.portalV2.descriptiveText.TITLE,
@@ -174,8 +163,8 @@ window.plugin.portalsdetails.getPortalLink = function(portal,guid) {
         onClick: jsSingleClick,
         onDblClick: jsDoubleClick
     })[0].outerHTML;
-    var div = '<div style="max-height: 15px !important; min-width:140px !important;max-width:180px !important; overflow: hidden; text-overflow:ellipsis;">'+a+'</div>';
-    return div;
+
+    return '<div style="max-height: 15px !important; min-width:140px !important;max-width:180px !important; overflow: hidden; text-overflow:ellipsis;">'+a+'</div>';
 }
 
 var setup =  function() {
