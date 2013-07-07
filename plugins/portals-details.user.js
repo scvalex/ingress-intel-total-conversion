@@ -85,31 +85,31 @@ window.plugin.portalsdetails.getPortals = function() {
         if (mod) {
             switch (mod.displayName) {
                 case 'Portal Shield':
-    				modShortName = 'S';		
+    				modShortName = 'S';
             		break;
                 case 'Force Amp':
-					modShortName = 'FA';		
+					modShortName = 'FA';
             		break;
                 case 'Link Amp':
-					modShortName = 'LA';		
-            		break;  
+					modShortName = 'LA';
+            		break;
                 case 'Heat Sink':
-					modShortName = 'H';		
+					modShortName = 'H';
             		break;
                 case 'Multi-hack':
-					modShortName = 'M';		
-            		break;  
+					modShortName = 'M';
+            		break;
                 case 'Turret':
-					modShortName = 'T';		
-            		break;  
+					modShortName = 'T';
+            		break;
                 default:
-                    modShortName = '';		
-            		break;  
+                    modShortName = '';
+            		break;
             }
         if (modShortName === '') {
             mods[ind] = ['', '', ''];
             } else {
-			mods[ind] = [mod.rarity, getPlayerName(mod.installingUser), modShortName, mod.displayName];            
+			mods[ind] = [mod.rarity, getPlayerName(mod.installingUser), modShortName, mod.displayName];
         }
       }else { mods[ind] = ['', '', '']; }
     });
@@ -158,12 +158,12 @@ window.plugin.portalsdetails.displayPL = function() {
   $(document).on('click.portalsdetails', '#portalslist .filterEnl', function() {
     $('#portalslist').html(window.plugin.portalsdetails.portalTable($(this).data('sort'),window.plugin.portalsdetails.sortOrder,2));
   });
-  
+
   //debug tools
   //end = new Date().getTime();
   //console.log('***** end : ' + end + ' and Elapse : ' + (end - start));
  }
-    
+
 window.plugin.portalsdetails.portalTable = function(sortBy, sortOrder, filter) {
   // sortOrder <0 ==> desc, >0 ==> asc, i use sortOrder * -1 to change the state
   window.plugin.portalsdetails.filter=filter;
@@ -299,8 +299,8 @@ window.plugin.portalsdetails.stats = function(sortBy) {
   //console.log('** stats');
   var html = '<table><tr>'
   + '<td class="filterAll" style="cursor:pointer"  onclick="window.plugin.portalsdetails.portalTable(\'level\',-1,0)"><a href=""></a>All Portals : (click to filter)</td><td class="filterAll">' + window.plugin.portalsdetails.listPortals.length + '</td>'
-  + '<td class="filterRes" style="cursor:pointer" class="sorted" onclick="window.plugin.portalsdetails.portalTable(\'level\',-1,1)">Resistance Portals : </td><td class="filterRes">' + window.plugin.portalsdetails.resP +' (' + Math.floor(window.plugin.portalsdetails.resP/window.plugin.portalsdetails.listPortals.length*100) + '%)</td>' 
-  + '<td class="filterEnl" style="cursor:pointer" class="sorted" onclick="window.plugin.portalsdetails.portalTable(\'level\',-1,2)">Enlightened Portals : </td><td class="filterEnl">'+ window.plugin.portalsdetails.enlP +' (' + Math.floor(window.plugin.portalsdetails.enlP/window.plugin.portalsdetails.listPortals.length*100) + '%)</td>'  
+  + '<td class="filterRes" style="cursor:pointer" class="sorted" onclick="window.plugin.portalsdetails.portalTable(\'level\',-1,1)">Resistance Portals : </td><td class="filterRes">' + window.plugin.portalsdetails.resP +' (' + Math.floor(window.plugin.portalsdetails.resP/window.plugin.portalsdetails.listPortals.length*100) + '%)</td>'
+  + '<td class="filterEnl" style="cursor:pointer" class="sorted" onclick="window.plugin.portalsdetails.portalTable(\'level\',-1,2)">Enlightened Portals : </td><td class="filterEnl">'+ window.plugin.portalsdetails.enlP +' (' + Math.floor(window.plugin.portalsdetails.enlP/window.plugin.portalsdetails.listPortals.length*100) + '%)</td>'
   + '</tr>'
   + '</table>';
   return html;
