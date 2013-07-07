@@ -26,7 +26,7 @@
 window.plugin.portalsdetails = function() {
 };
 
-window.plugin.portalsdetails.listPortals = []; // structure : name, team, level, resonators = Array, Shields = Array, APgain
+window.plugin.portalsdetails.listPortals = [];
 
 //fill the listPortals array with portals avalaible on the map (level filtered portals will not appear in the table)
 window.plugin.portalsdetails.getPortals = function() {
@@ -60,19 +60,8 @@ window.plugin.portalsdetails.getPortals = function() {
                        });
         });
 
-        //get resonators informations
-        var resonators = []; // my local resonator array : reso level, reso deployed by, distance to portal, energy total, max
         var energy = 0;
         var maxenergy=0;
-        $.each(portal.options.details.resonatorArray.resonators, function(ind, reso) {
-            if(reso) {
-                resonators[ind] = [reso.level, window.getPlayerName(reso.ownerGuid), reso.distanceToPortal, reso.energyTotal, RESO_NRG[reso.level]];
-                energy += reso.energyTotal;
-                maxenergy += RESO_NRG[reso.level];
-            } else { resonators[ind] = [0,'',0,0,0]; }
-        });
-        // Sort resonators array by resonator level
-        resonators.sort(function (a, b) {return b[0] - a[0]});
 
         var APgain= getAttackApGain(d).enemyAp;
         var thisPortal = { 'portal': d,
@@ -80,7 +69,6 @@ window.plugin.portalsdetails.getPortals = function() {
                            'team': team,
                            'level': level,
                            'guid': guid,
-                           'resonators': resonators,
                            'energyratio': maxenergy ? Math.floor(energy/maxenergy*100) : 0,
                            'APgain': APgain,
                            'EAP': (energy/APgain).toFixed(2),
