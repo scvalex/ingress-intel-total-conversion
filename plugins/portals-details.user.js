@@ -60,20 +60,11 @@ window.plugin.portalsdetails.getPortals = function() {
                        });
         });
 
-        var energy = 0;
-        var maxenergy=0;
-
-        var APgain= getAttackApGain(d).enemyAp;
         var thisPortal = { 'portal': d,
                            'name': name,
                            'team': team,
                            'level': level,
                            'guid': guid,
-                           'energyratio': maxenergy ? Math.floor(energy/maxenergy*100) : 0,
-                           'APgain': APgain,
-                           'EAP': (energy/APgain).toFixed(2),
-                           'energy': energy,
-                           'maxenergy': maxenergy,
                            'edges': edges,
                            'lat': portal._latlng.lat,
                            'lng': portal._latlng.lng,
