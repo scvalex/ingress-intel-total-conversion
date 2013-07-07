@@ -66,8 +66,6 @@ window.plugin.portalsdetails.getPortals = function() {
                            'level': level,
                            'guid': guid,
                            'edges': edges,
-                           'lat': portal._latlng.lat,
-                           'lng': portal._latlng.lng,
                            'address': address,
                            'img': img,
                            'coords': coords
