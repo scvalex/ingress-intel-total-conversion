@@ -164,13 +164,7 @@ window.plugin.portalsdetails.portalTable = function() {
         + '<th>Coordinates</th>'
         + '<th>Level</th>'
         + '<th>Team</th>'
-        + '<th>Links</th>'
-        + '<th>M1</th>'
-        + '<th>M2</th>'
-        + '<th>M3</th>'
-        + '<th>M4</th>'
-        + '<th>AP Gain</th>'
-        + '<th title="Energy / AP Gain ratio">E/AP</th></tr>';
+        + '<th>Links</th></tr>';
 
     var prettyPrintCoords = function(coords) {
         return "" + (coords.lat / 1e6) + " " + (coords.lng / 1e6);
@@ -184,14 +178,7 @@ window.plugin.portalsdetails.portalTable = function() {
             + '<td class="L' + Math.floor(portal.level) +'">' + portal.level + '</td>'
             + '<td style="text-align:center;">' + portal.team + '</td>';
 
-        html += '<td style="cursor:help" title="' + portal.links + '">' + portal.links + '</td>'
-            + '<td style="cursor:help; background-color: '+COLORS_MOD[portal.mods[0][0]]+';" title="Mod : ' + portal.mods[0][3] + '\nInstalled by : ' + portal.mods[0][1] + '\nRarity : ' + portal.mods[0][0] + '">' + portal.mods[0][2] + '</td>'
-            + '<td style="cursor:help; background-color: '+COLORS_MOD[portal.mods[1][0]]+';" title="Mod : ' + portal.mods[1][3] + '\nInstalled by : ' + portal.mods[1][1] + '\nRarity : ' + portal.mods[1][0] + '">' + portal.mods[1][2] + '</td>'
-            + '<td style="cursor:help; background-color: '+COLORS_MOD[portal.mods[2][0]]+';" title="Mod : ' + portal.mods[2][3] + '\nInstalled by : ' + portal.mods[2][1] + '\nRarity : ' + portal.mods[2][0] + '">' + portal.mods[2][2] + '</td>'
-            + '<td style="cursor:help; background-color: '+COLORS_MOD[portal.mods[3][0]]+';" title="Mod : ' + portal.mods[3][3] + '\nInstalled by : ' + portal.mods[3][1] + '\nRarity : ' + portal.mods[3][0] + '">' + portal.mods[3][2] + '</td>'
-            + '<td>' + portal.APgain + '</td>'
-            + '<td>' + portal.EAP + '</td>';
-
+        html += '<td style="cursor:help" title="' + portal.links + '">' + portal.links + '</td>';
         html+= '</tr>';
     });
     html += '</table>';
