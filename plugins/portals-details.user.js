@@ -163,15 +163,7 @@ window.plugin.portalsdetails.portalTable = function() {
         + '<th>Portal</th>'
         + '<th>Coordinates</th>'
         + '<th>Level</th>'
-        + '<th>T</th>'
-        + '<th>R1</th>'
-        + '<th>R2</th>'
-        + '<th>R3</th>'
-        + '<th>R4</th>'
-        + '<th>R5</th>'
-        + '<th>R6</th>'
-        + '<th>R7</th>'
-        + '<th>R8</th>'
+        + '<th>Team</th>'
         + '<th>Energy</th>'
         + '<th>%</th>'
         + '<th>Links</th>'
@@ -193,18 +185,6 @@ window.plugin.portalsdetails.portalTable = function() {
             + '<td>' + prettyPrintCoords(portal.coords) + '</td>'
             + '<td class="L' + Math.floor(portal.level) +'">' + portal.level + '</td>'
             + '<td style="text-align:center;">' + portal.team + '</td>';
-
-        var title;
-        var percent;
-        $.each([0, 1, 2, 3 ,4 ,5 ,6 ,7], function(ind, slot) {
-            percent = portal.resonators[slot][4] ? Math.floor(portal.resonators[slot][3]/portal.resonators[slot][4]*100) : 0;
-            title = 'title="owner: <b>' + portal.resonators[slot][1] + '</b><br>'
-                + 'energy: ' + portal.resonators[slot][3] + ' / ' + portal.resonators[slot][4] + ' (' + percent + '%)<br>'
-                + 'distance: ' + portal.resonators[slot][2] + 'm';
-
-            html += '<td class="L' + portal.resonators[slot][0] +'" ' + title + '">' + portal.resonators[slot][0] + '</td>';
-
-        });
 
         html += '<td style="cursor:help" title="'+ portal.energy +'">' + prettyEnergy(portal.energy) + '</td>'
             + '<td style="cursor:help" title="' + portal.energy + ' / ' + portal.maxenergy +'">' + portal.energyratio + '%</td>'
