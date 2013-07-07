@@ -53,9 +53,9 @@ window.plugin.portalsdetails.getPortals = function() {
                        lng: portal.options.details.locationE6.lngE6
                      };
 
-        var links = [];
+        var edges = [];
         $.each(d.portalV2.linkedEdges, function(ind, edge) {
-            links.push({ source: guid,
+            edges.push({ source: guid,
                          dest: edge.otherPortalGuid
                        });
         });
@@ -123,7 +123,7 @@ window.plugin.portalsdetails.getPortals = function() {
                            'EAP': (energy/APgain).toFixed(2),
                            'energy': energy,
                            'maxenergy': maxenergy,
-                           'links': links,
+                           'edges': edges,
                            'lat': portal._latlng.lat,
                            'lng': portal._latlng.lng,
                            'address': address,
@@ -144,7 +144,10 @@ window.plugin.portalsdetails.displayPL = function() {
     var html = '';
 
     if (window.plugin.portalsdetails.getPortals()) {
-        html += window.plugin.portalsdetails.portalTable();
+        html += '<h3>Portals</h3>';
+        html += window.plugin.portalsdetails.portalsTable();
+        html += '<h3>Links</h3>';
+        html += window.plugin.portalsdetails.edgesTable();
     } else {
         html = '<table><tr><td>Nothing to show!</td></tr></table>';
     };
@@ -161,7 +164,27 @@ window.plugin.portalsdetails.displayPL = function() {
     //console.log('***** end : ' + end + ' and Elapse : ' + (end - start));
 }
 
-window.plugin.portalsdetails.portalTable = function() {
+window.plugin.portalsdetails.edgesTable = function() {
+    var portals = window.plugin.portalsdetails.listPortals;
+
+    var html = "";
+    html += "<table><tbody>";
+
+    $.each(portals, function(ind, portal) {
+        $.each(portal.edges, function(jnd, edge) {
+            html += '<tr class="' + (portal.team === 1 ? 'res' : (portal.team === 2 ? 'enl' : 'neutral')) + '">'
+                + '<td>' + edge.source + '</td>'
+                + '<td>' + edge.dest + '</td>'
+                + '</tr>';
+        });
+    });
+
+    html += "</tbody></table>";
+
+    return html;
+}
+
+window.plugin.portalsdetails.portalsTable = function() {
     var portals = window.plugin.portalsdetails.listPortals;
 
     var html = "";
@@ -183,7 +206,7 @@ window.plugin.portalsdetails.portalTable = function() {
             + '<td class="L' + Math.floor(portal.level) +'">' + portal.level + '</td>'
             + '<td style="text-align:center;">' + portal.team + '</td>';
 
-        html += '<td style="cursor:help">' + portal.links.length + '</td>';
+        html += '<td style="cursor:help">' + portal.edges.length + '</td>';
         html+= '</tr>';
     });
     html += '</table>';
@@ -220,7 +243,7 @@ var setup =  function() {
     $('head').append('<style>' +
                      '.ui-dialog-portals-details {max-width: 1200px !important; width: auto !important;}' +
                      '#dialog-portals-details {max-width: 1200px !important; width: auto !important; }' +
-                     '#portalsdetails table {margin-top:5px; border-collapse: collapse; empty-cells: show; width:100%; clear: both;}' +
+                     '#portalsdetails table {margin-top:5px; margin-bottom: 1em; border-collapse: collapse; empty-cells: show; width:100%; clear: both;}' +
                      '#portalsdetails table td, #portalsdetails table th {border-bottom: 1px solid #0b314e; padding:3px; color:white; background-color:#1b415e}' +
                      '#portalsdetails table tr.res td {  background-color: #005684; }' +
                      '#portalsdetails table tr.enl td {  background-color: #017f01; }' +
